@@ -1,0 +1,78 @@
+Implement and demonstrate the use of the following in Solidity :
+(I).Functions (II).View Functions (III).Pure Functions
+(IV).Fallback Functions (V).Function Overloading (VI).Mathematical Functions (VII).Cryptographic Functions
+
+(I).Functions
+pragma solidity ^0.5.0; contract SolidityTest {
+function testpgmresult() public view returns(uint){ uint a = 1000; // local variable
+uint b = 2000; uint result = a + b;
+return result; //access the state variable
+}
+}
+ 
+(II).View Functions
+pragma solidity ^0.5.0; contract Test {
+function getResult() public view returns(uint product, uint sum){ uint a = 1; // local variable
+uint b = 2; product = a * b; sum = a + b;
+}
+}
+ 
+
+(III).Pure Functions pragma solidity ^0.5.0; contract C {
+//private state variable uint private data;
+
+//public state variable uint public info;
+
+//constructor
+ 
+constructor() public { info = 10;
+}
+//private function
+function increment(uint a) private pure returns(uint) { return a + 1; }
+
+
+//public function
+function updateData(uint a) public { data = a; }
+function getData() public view returns(uint) { return data; }
+function compute(uint a, uint b) internal pure returns (uint) { return a + b; }
+}
+
+
+//Derived Contract contract E is C { uint private result; C private c;
+
+constructor() public { c = new C();
+}
+function getComputedResult() public { result = compute(3, 5);
+}
+function getResult() public view returns(uint) { return result; } function getData() public view returns(uint) { return c.info(); }
+}
+
+
+(V).Function Overloading pragma solidity ^0.5.0; contract Test {
+function getSum(uint a, uint b) public pure returns(uint){ return a + b;
+}
+function getSum(uint a, uint b, uint c) public pure returns(uint){ return a + b + c;
+}
+function callSumWithTwoArguments() public pure returns(uint){ return getSum(1,2);
+}
+function callSumWithThreeArguments() public pure returns(uint){ return getSum(1,2,3);
+}
+}
+
+
+
+(VI).Mathematical Functions pragma solidity ^0.5.0; contract Test {
+function callAddMod() public pure returns(uint){ return addmod(4, 5, 3);
+}
+function callMulMod() public pure returns(uint){ return mulmod(4, 5, 3);
+}
+}
+
+
+(VII).Cryptographic Functions pragma solidity ^0.5.0; contract Test {
+function callsha256() public pure returns( bytes32 result){ return sha256("ronaldo");
+}
+function callkeccak256() public pure returns( bytes32 result){ return keccak256("ronaldo");
+}
+}
+
