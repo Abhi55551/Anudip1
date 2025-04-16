@@ -1,0 +1,123 @@
+Write the following programs for Blockchain in Python :
+(I).Create multiple transactions and display them .
+(II). Create a blockchain, a genesis block and execute it .
+import datetime
+import hashlib
+import json
+from uuid import uuid4
+from Crypto.PublicKey import RSA
+from Crypto.Signature import PKCS1_v1_5
+from Crypto.Hash import SHA
+
+# ----------------------- Client Class -----------------------
+class Client:
+    def __init__(self):
+        random = RSA.generate(1024)
+        self._private_key = random.exportKey(format='DER')
+        self._public_key = random.publickey().exportKey(format='DER')
+        self.identity = self._public_key.hex()
+
+# ------------------- Transaction Class ----------------------
+class Transaction:
+    def __init__(self, sender, recipient, value):
+        self.sender = sender.identity if isinstance(sender, Client) else sender
+        self.recipient = recipient
+        self.value = value
+        self.time = datetime.datetime.now()
+        self.signature = ''
+
+    def to_dict(self):
+        return {
+            'sender': self.sender,
+            'recipient': self.recipient,
+            'value': self.value,
+            'time': self.time.isoformat()
+        }
+
+    def sign_transaction(self):
+        private_key = RSA.importKey(self.sender._private_key)
+        signer = PKCS1_v1_5.new(private_key)
+        h = SHA.new(str(self.to_dict()).encode('utf8'))
+        self.signature = signer.sign(h).hex()
+
+# ---------------- Display Transactions ----------------------
+def display_transaction(transaction):
+    t_dict = transaction.to_dict()
+    print("Sender:    ", t_dict['sender'])
+    print("Recipient: ", t_dict['recipient'])
+    print("Value:     ", t_dict['value'])
+    print("Time:      ", t_dict['time'])
+    print('-' * 40)
+
+# ------------------- Create Transactions --------------------
+transactions = []
+
+Dinesh = Client()
+Ramesh = Client()
+Seema = Client()
+Vijay = Client()
+
+# Add 10 transactions
+transaction_data = [
+    (Dinesh, Ramesh.identity, 15.0),
+    (Dinesh, Seema.identity, 6.0),
+    (Ramesh, Vijay.identity, 2.0),
+    (Seema, Ramesh.identity, 4.0),
+    (Vijay, Seema.identity, 7.0),
+    (Ramesh, Seema.identity, 3.0),
+    (Seema, Dinesh.identity, 8.0),
+    (Seema, Ramesh.identity, 1.0),
+    (Vijay, Dinesh.identity, 5.0),
+    (Vijay, Ramesh.identity, 3.0)
+]
+# ---------------------- Block Class -------------------------
+class Block:
+    def __init__(self):
+        self.verified_transactions = []
+        self.previous_block_hash = None
+        self.Nonce = None
+
+# --------------------- Blockchain ---------------------------
+def hash(block):
+    block_string = json.dumps([tx.to_dict() for tx in block.verified_transactions], sort_keys=True).encode()
+    return hashlib.sha256(block_string).hexdigest()
+
+# ----------------- Genesis Block Creation -------------------
+Dinesh = Client()
+t0 = Transaction("Genesis", Dinesh.identity, 500.0)
+t0.sign_transaction()
+
+block0 = Block()
+block0.verified_transactions.append(t0)
+block0.previous_block_hash = None
+block0.Nonce = 0
+
+digest = hash(block0)
+
+TPCoins = [block0]
+
+# ------------- Blockchain Display Function ------------------
+def dump_blockchain(blockchain):
+    print("\n======= Blockchain Dump =======")
+    print("Number of blocks in the chain:", len(blockchain))
+    print("=====================================")
+    for i, block in enumerate(blockchain):
+        print(f"\nBlock #{i}")
+        for transaction in block.verified_transactions:
+            display_transaction(transaction)
+        print("Hash of Previous Block:", block.previous_block_hash)
+        print("Nonce:", block.Nonce)
+        print("=====================================")
+
+# ------------------- Execute -------------------------------
+dump_blockchain(TPCoins)
+
+for sender, recipient, value in transaction_data:
+    t = Transaction(sender, recipient, value)
+    t.sign_transaction()
+    transactions.append(t)
+
+# Display all transactions
+for tx in transactions:
+    display_transaction(tx)
+
