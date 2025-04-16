@@ -1,0 +1,124 @@
+Implement and demonstrate the use of the following in Solidity :
+(I).Varaible (II).Operators (III).Loops (IV).Decision Making (V).Strings
+
+(I).Variable
+pragma solidity ^0.5.0; contract SolidityTest {
+uint storedData; // State variable constructor() public { storedData = 10;
+}
+function getResult() public view returns(uint){ uint a = 1; // local variable
+uint b = 2;
+uint result = a + b;
+return storedData; //access the state variable
+}
+}
+
+
+// Solidity program to demonstrate state variables
+pragma solidity ^0.5.0;
+
+
+// Creating a contract contract Solidity_var_Test {
+
+// Declaring a state variable uint8 public state_var;
+
+// Defining a constructor constructor() public { state_var = 16;
+}
+}
+// Solidity program to show Global variables
+pragma solidity ^0.5.0;
+
+
+// Creating a contract contract Test {
+
+// Defining a variable address public admin;
+
+// Creating a constructor to
+// use Global variable constructor() public { admin = msg.sender;
+}
+}
+
+
+(II).Operators
+// Solidity contract to demonstrate Arithematic Operator pragma solidity ^0.5.0;
+
+// Creating a contract contract SolidityTest {
+
+// Initializing variables uint16 public a = 20; uint16 public b = 10;
+// Initializing a variable with sum uint public sum = a + b;
+
+// Initializing a variable with the difference uint public diff = a - b;
+ 
+// Initializing a variable with product uint public mul = a * b;
+
+// Initializing a variable with quotient uint public div = a / b;
+
+// Initializing a variable with modulus uint public mod = a % b;
+
+// Initializing a variable decrement value uint public dec = --b;
+
+// Initializing a variable with increment value uint public inc = ++a;
+}
+
+
+(IV).Decision Making
+// Solidity program to demonstrate the use of 'if statement'
+pragma solidity ^0.5.0;
+
+
+// Creating a contract contract Types {
+// Declaring state variable uint i = 10;
+
+// Defining function to demonstrate use of 'if statement' function decision_making() public view returns(bool){ if(i<10){
+return true;
+}
+}
+}
+
+
+
+
+// Solidity program to demonstrate the use of 'if...else' statement
+pragma solidity ^0.5.0;
+
+
+// Creating a contract contract Types {
+
+// Declaring state variables
+ 
+uint i = 10; bool even;
+
+// Defining function to
+// demonstrate the use of
+// 'if...else statement'
+function decision_making() public { if(i%2 == 0){
+even = true;
+}
+else{
+even = false;
+}
+}
+function getresult() public view returns(bool)
+{
+return even;
+}
+}
+
+(III)	Strings
+ 
+// Solidity program to demonstrate
+// how to create a contract pragma solidity ^0.4.23;
+
+// Creating a contract contract Test {
+
+// Declaring variable string str;
+
+// Defining a constructor constructor(string str_in){ str = str_in;
+}
+
+
+// Defining a function to
+// return value of variable 'str'
+function str_out() public view returns(string memory){ return str;
+}
+}
+
