@@ -1,0 +1,46 @@
+# ---------------- SHA-256 Hashing Function ------------------
+def sha256(message):
+    return hashlib.sha256(message.encode('ascii')).hexdigest()
+
+# ---------------- Mining Function --------------------------
+def mine(message, difficulty=1):
+    assert difficulty >= 1
+    prefix = '1' * difficulty
+    print(f"\nMining started for message: {message} with difficulty {difficulty}")
+    for i in range(100000):  # Increase iterations for better proof-of-work
+        digest = sha256(str(hash(message)) + str(i))
+        if digest.startswith(prefix):
+            print(f"✅ After {i} iterations, found nonce: {digest}")
+            return digest
+    print("❌ No nonce found within the iteration limit")
+    return None
+
+
+
+# ------------- Start Mining and Adding Blocks --------------
+last_transaction_index = 0
+difficulty = 2  # You can increase for higher mining difficulty
+
+# Add 3 blocks (3 transactions each)
+for miner in range(3):
+    print(f"\n🧱 Miner {miner + 1} is creating a block...")
+    block = Block()
+    
+    for i in range(3):
+        if last_transaction_index < len(transactions):
+            temp_transaction = transactions[last_transaction_index]
+            # Assume transaction is valid (validation can be extended)
+            block.verified_transactions.append(temp_transaction)
+            last_transaction_index += 1
+
+    # Mine and set nonce
+    block.previous_block_hash = last_block_hash
+    block.Nonce = mine(str([tx.to_dict() for tx in block.verified_transactions]), difficulty)
+
+    # Compute block hash
+    digest = hash(block)
+    TPCoins.append(block)
+    last_block_hash = digest
+
+# ------------------- Dump Final Blockchain ------------------
+dump_blockchain(TPCoins)
